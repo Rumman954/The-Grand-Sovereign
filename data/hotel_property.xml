@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="property_main" model="hotel.property">
+            <field name="name">The Grand Sovereign</field>
+        </record>
+        <record id="base.main_company" model="res.company">
+            <field name="name">The Grand Sovereign</field>
+        </record>
+    </data>
+</odoo>

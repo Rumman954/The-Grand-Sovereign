@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="room_101" model="hotel.room">
+        <field name="number">101</field>
+        <field name="room_type">single</field>
+        <field name="floor">1</field>
+        <field name="capacity">1</field>
+        <field name="price_per_night">80</field>
+    </record>
+    <record id="room_102" model="hotel.room">
+        <field name="number">102</field>
+        <field name="room_type">double</field>
+        <field name="floor">1</field>
+        <field name="capacity">2</field>
+        <field name="price_per_night">120</field>
+    </record>
+    <record id="room_201" model="hotel.room">
+        <field name="number">201</field>
+        <field name="room_type">suite</field>
+        <field name="floor">2</field>
+        <field name="capacity">3</field>
+        <field name="price_per_night">200</field>
+    </record>
+
+    <record id="guest_karim" model="hotel.guest">
+        <field name="name">Karim Ahmed</field>
+        <field name="phone">01700000001</field>
+        <field name="email">karim@example.com</field>
+    </record>
+    <record id="guest_nusrat" model="hotel.guest">
+        <field name="name">Nusrat Jahan</field>
+        <field name="phone">01800000002</field>
+        <field name="email">nusrat@example.com</field>
+    </record>
+</odoo>

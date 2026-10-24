@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hotel_booking_list" model="ir.ui.view">
+        <field name="name">hotel.booking.list</field>
+        <field name="model">hotel.booking</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="guest_id"/>
+                <field name="room_id"/>
+                <field name="check_in"/>
+                <field name="check_out"/>
+                <field name="nights"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="amount_total"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-primary="state == 'confirmed'"
+                       decoration-success="state == 'checked_in'"
+                       decoration-muted="state in ('checked_out', 'cancelled')"/>
+                <button name="action_print_slip" type="object" string="Print" title="Print guest slip"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hotel_booking_form" model="ir.ui.view">
+        <field name="name">hotel.booking.form</field>
+        <field name="model">hotel.booking</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_print_slip" type="object" string="Print"
+                            class="oe_highlight"/>
+                    <button name="action_check_in" type="object" string="Check In"
+                            class="oe_highlight" invisible="state != 'confirmed'"/>
+                    <button name="action_check_out" type="object" string="Check Out"
+                            class="oe_highlight" invisible="state != 'checked_in'"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state in ('checked_out', 'cancelled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed,checked_in,checked_out"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="hotel_name" readonly="1"/></h1>
+                        <label for="name" string="Booking"/>
+                        <h2><field name="name"/></h2>
+                    </div>
+                    <group>
+                        <group string="Guest">
+                            <field name="guest_id" readonly="state != 'draft'"/>
+                            <field name="guest_phone" widget="phone" readonly="state != 'draft' or not guest_id"/>
+                            <field name="guest_email" widget="email" readonly="state != 'draft' or not guest_id"/>
+                            <field name="guest_id_number" readonly="state != 'draft' or not guest_id"/>
+                        </group>
+                        <group string="Stay">
+                            <field name="room_id" readonly="state != 'draft'"
+                                   context="{'booking_check_in': check_in, 'booking_check_out': check_out, 'booking_ignore_id': id}"/>
+                            <field name="room_type"/>
+                            <field name="price_per_night" readonly="state != 'draft'"/>
+                            <field name="check_in" readonly="state != 'draft'"/>
+                            <field name="check_out" readonly="state != 'draft'"/>
+                            <field name="memo_arrival" readonly="1"/>
+                            <field name="memo_check_out_time" string="Check-out time" readonly="1"/>
+                            <field name="nights"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="amount_total"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Special requests..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hotel_booking_search" model="ir.ui.view">
+        <field name="name">hotel.booking.search</field>
+        <field name="model">hotel.booking</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="guest_id"/>
+                <field name="room_id"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="checked_in" string="Checked In" domain="[('state', '=', 'checked_in')]"/>
+                <separator/>
+                <filter name="today_in" string="Check-in Today"
+                        domain="[('check_in', '=', 'today')]"/>
+                <filter name="today_out" string="Check-out Today"
+                        domain="[('check_out', '=', 'today')]"/>
+                <group>
+                    <filter name="group_guest" string="Guest" context="{'group_by': 'guest_id'}"/>
+                    <filter name="group_room" string="Room" context="{'group_by': 'room_id'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hotel_booking" model="ir.actions.act_window">
+        <field name="name">Bookings</field>
+        <field name="res_model">hotel.booking</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
