@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_booking_slip" model="ir.actions.report">
+        <field name="name">Guest Booking Slip</field>
+        <field name="model">hotel.booking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hotel_management.report_booking_slip</field>
+        <field name="print_report_name">'Guest Slip - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_hotel_booking"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_booking_slip">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page" style="font-family: 'Times New Roman', Times, serif; color: #1a1a1a; font-size: 13px;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 70%; vertical-align: top;">
+                                    <img t-att-src="o.slip_logo" alt="The Grand Sovereign" style="height: 42px;"/>
+                                    <div style="margin-top: 6px; font-size: 12px; letter-spacing: 1px;">GUEST CONFIRMATION MEMO</div>
+                                </td>
+                                <td style="width: 30%; text-align: right; vertical-align: top; font-size: 12px;">
+                                    <div style="color: #666;">Form issued</div>
+                                    <div><t t-out="o.memo_issue_time"/></div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="margin: 18px 0 4px;">
+                            Dear <span t-field="o.guest_id"/>,
+                        </p>
+                        <p style="margin: 0 0 14px;">
+                            Thank you for choosing The Grand Sovereign.
+                            This memo confirms the booking below. Please keep it and present it at reception.
+                        </p>
+
+                        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                            <tr>
+                                <td style="border: 1px solid #222; padding: 6px; width: 22%;"><strong>Guest name</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px; width: 28%;"><span t-field="o.guest_id"/></td>
+                                <td style="border: 1px solid #222; padding: 6px; width: 22%;"><strong>Confirmation no.</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px; width: 28%;"><span t-field="o.name"/></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>Phone</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><span t-field="o.guest_id.phone"/></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>Email</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><span t-field="o.guest_id.email"/></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>NID / Passport</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><span t-field="o.guest_id.id_number"/></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>Status</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><span t-field="o.state"/></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>Arrival date</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><span t-field="o.check_in"/></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>Departure date</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><span t-field="o.check_out"/></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong><t t-out="o.memo_time_label"/></strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><t t-out="o.memo_check_in_time"/></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>Check-out time</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;">11:00 AM</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>Room</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><span t-field="o.room_id"/></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>Room type</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><span t-field="o.room_id.room_type"/></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>Nights</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><span t-field="o.nights"/></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong>Total</strong></td>
+                                <td style="border: 1px solid #222; padding: 6px;"><strong><span t-field="o.amount_total"/></strong></td>
+                            </tr>
+                        </table>
+
+                        <p t-if="o.notes" style="margin: 10px 0 0; font-size: 12px;">
+                            <strong>Notes: </strong><span t-field="o.notes"/>
+                        </p>
+
+                        <div style="margin-top: 16px; font-size: 12px;">
+                            <div style="font-weight: bold; letter-spacing: 0.5px;">STAY TIMES</div>
+                            <div style="margin-top: 4px;">
+                                Check-out is always <strong>11:00 AM</strong> on the departure date.
+                                The time beside “<t t-out="o.memo_time_label"/>” is the time this booking was made.
+                                After the guest checks in, that line shows the check-in time instead.
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 12px; font-size: 12px;">
+                            <div style="font-weight: bold; letter-spacing: 0.5px;">CANCELLATION</div>
+                            <div style="margin-top: 4px;">
+                                A booking may be cancelled until 24 hours before the arrival date.
+                                A same-day cancellation or a no-show may be charged one night at the booked rate.
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 12px; font-size: 12px;">
+                            <div style="font-weight: bold; letter-spacing: 0.5px;">HOUSE RULES</div>
+                            <div style="margin-top: 4px;">The guest must show the NID or passport recorded on this memo.</div>
+                            <div>Any balance is payable before departure.</div>
+                            <div>Guest rooms are non-smoking.</div>
+                            <div>Visitors are registered at reception.</div>
+                            <div>Valuables should be left with reception. The hotel is not responsible for items left in the room.</div>
+                            <div>Parking depends on space available at the hotel.</div>
+                        </div>
+
+                        <p style="margin: 16px 0 0;">
+                            We look forward to welcoming you to The Grand Sovereign.
+                        </p>
+
+                        <table style="width: 100%; margin-top: 28px; font-size: 12px;">
+                            <tr>
+                                <td style="width: 50%; vertical-align: top;">
+                                    Guest signature<br/><br/>
+                                    ______________________________<br/>
+                                    Name: <span t-field="o.guest_id"/><br/>
+                                    Date: ____________________
+                                </td>
+                                <td style="width: 50%; vertical-align: top;">
+                                    Front office signature<br/><br/>
+                                    ______________________________<br/>
+                                    Name: ____________________<br/>
+                                    Date: ____________________
+                                </td>
+                            </tr>
+                        </table>
+                        <p style="margin-top: 14px; font-size: 11px; color: #444;">
+                            Sign this memo at reception. One copy stays with the guest and one copy stays at the desk.
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
