@@ -17,6 +17,7 @@ and a printable guest slip.
         'views/hotel_guest_views.xml',
         'views/hotel_booking_views.xml',
         'views/hotel_availability_views.xml',
+        'views/document_layout_views.xml',
         'views/hotel_menus.xml',
     ],
     'demo': [

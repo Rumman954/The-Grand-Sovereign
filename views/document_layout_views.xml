@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The print logo is fixed. Do not show a logo upload. -->
+    <record id="view_base_document_layout_hide_logo" model="ir.ui.view">
+        <field name="name">base.document.layout.hide.logo</field>
+        <field name="model">base.document.layout</field>
+        <field name="inherit_id" ref="web.view_base_document_layout"/>
+        <field name="arch" type="xml">
+            <field name="logo" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
