@@ -12,6 +12,7 @@ and a printable guest slip.
         'security/ir.access.csv',
         'data/ir_sequence.xml',
         'data/hotel_property.xml',
+        'data/hotel_rooms.xml',
         'report/booking_slip.xml',
         'views/hotel_room_views.xml',
         'views/hotel_guest_views.xml',
