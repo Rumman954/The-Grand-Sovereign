@@ -5,6 +5,10 @@
               parent="menu_hotel_root"
               action="action_hotel_booking"
               sequence="10"/>
+    <menuitem id="menu_hotel_availability" name="Availability"
+              parent="menu_hotel_root"
+              action="action_hotel_availability"
+              sequence="15"/>
     <menuitem id="menu_hotel_room" name="Rooms"
               parent="menu_hotel_root"
               action="action_hotel_room"
